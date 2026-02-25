@@ -1,4 +1,3 @@
-# Use plain Node image
 FROM --platform=linux/amd64 node:24-bookworm
 
 # Install system dependencies for Playwright browsers and ffmpeg
