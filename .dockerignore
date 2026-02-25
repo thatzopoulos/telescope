@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Results and output
+results/
+coverage/
+
+# Git
+.git/
+.gitignore
+
+# IDE and editor files
+.dir-locals.el
+.vscode/
+.idea/
+
+# Test artifacts
+*.tgz
+
+# Cache
+.ruff_cache/
+
+# Documentation (not needed in container)
+*.md
+*.org
+
+# Development files
+diffs-from-js-version.txt

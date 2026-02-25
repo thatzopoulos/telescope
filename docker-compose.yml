@@ -1,0 +1,18 @@
+services:
+  telescope:
+    build: .
+    volumes:
+      # Mount results directory to persist test results
+      - ./results:/app/results
+    # Required for Playwright browsers to run properly
+    ipc: host
+    # Security options needed for browser sandboxing
+    security_opt:
+      - seccomp=unconfined
+    environment:
+      # Run browsers in headless mode (required for Docker without display)
+      - CI=true
+      # Enable Docker-specific browser flags (--no-sandbox, ignoreHTTPSErrors)
+      - RUNNING_IN_DOCKER=true
+    # Example: override command to run a test
+    # command: ["-u", "https://example.com", "-b", "chrome", "--html"]
