@@ -687,7 +687,14 @@ class TestRunner {
 
         // Open the HTML report in the browser if --openHtml is set
         if (this.options.openHtml) {
-          this.openInBrowser(path.resolve(htmlPath));
+          if (process.env.RUNNING_IN_DOCKER) {
+            console.log(
+              'Skipping --openHtml: cannot open browser inside Docker container',
+            );
+            console.log('HTML report available at:', path.resolve(htmlPath));
+          } else {
+            this.openInBrowser(path.resolve(htmlPath));
+          }
         }
       } catch (err) {
         console.error('Error writing html file ' + err);

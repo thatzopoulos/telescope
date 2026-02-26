@@ -4,6 +4,14 @@ node_modules/
 # Results and output
 results/
 coverage/
+recordings/
+tmp/
+
+# Build output
+dist/
+
+# Tests
+tests/
 
 # Git
 .git/
