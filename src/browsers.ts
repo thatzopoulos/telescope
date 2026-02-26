@@ -34,9 +34,6 @@ const headless: boolean = parseEnvBool(process.env.HEADLESS, CI);
 
 type BrowserConfigs = Record<BrowserName, BrowserConfigEntry>;
 
-// Docker environment flag - used for HTTPS error handling
-const isDocker = !!process.env.RUNNING_IN_DOCKER;
-
 // Check if running as root (uid 0) - requires --no-sandbox for Chrome
 const isRoot = process.getuid?.() === 0;
 
