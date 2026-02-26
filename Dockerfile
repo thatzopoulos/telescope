@@ -54,9 +54,12 @@ RUN npx playwright install chrome chrome-beta msedge
 # Copy the rest of the application
 COPY . .
 
+# Build TypeScript
+RUN npm run build
+
 # Create results directory
 RUN mkdir -p /app/results /app/tmp /app/recordings
 
 # Default command - show help
-ENTRYPOINT ["node", "cli.js"]
+ENTRYPOINT ["node", "dist/src/cli.js"]
 CMD ["--help"]
