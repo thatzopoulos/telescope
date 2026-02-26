@@ -14,5 +14,3 @@ services:
       - HEADLESS=true
       # Enable Docker-specific browser flags (--no-sandbox, ignoreHTTPSErrors)
       - RUNNING_IN_DOCKER=true
-    # Example: override command to run a test
-    # command: ["-u", "https://example.com", "-b", "chrome", "--html"]
