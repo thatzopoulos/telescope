@@ -157,6 +157,22 @@ To test sites [protected with HTTP authentication](https://developer.mozilla.org
 npx . -u https://newsletter.www.example.com/admin -b safari --auth '{"username": "username", "password": "password"}'
 ```
 
+## Docker
+
+Build and run telescope in a container:
+
+```bash
+# Build
+docker compose build
+
+# Run a test
+docker compose run --rm telescope -u https://example.com -b chrome
+
+# Results are saved to ./results/
+```
+
+Supports: Chrome, Chrome Beta, Edge, Firefox, and Safari (WebKit).
+
 ## Installation
 
 ### NPM dependencies
