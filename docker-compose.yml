@@ -12,5 +12,5 @@ services:
     environment:
       # Run browsers in headless mode (required for Docker without display)
       - HEADLESS=true
-      # Enable Docker-specific browser flags (--no-sandbox, ignoreHTTPSErrors)
+      # Enable Docker-specific flags (ignoreHTTPSErrors)
       - RUNNING_IN_DOCKER=true

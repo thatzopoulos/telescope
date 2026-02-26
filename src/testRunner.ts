@@ -687,9 +687,9 @@ class TestRunner {
 
         // Open the HTML report in the browser if --openHtml is set
         if (this.options.openHtml) {
-          if (process.env.RUNNING_IN_DOCKER) {
+          if (this.browserConfig.headless) {
             console.log(
-              'Skipping --openHtml: cannot open browser inside Docker container',
+              'Skipping --openHtml: cannot open browser in headless mode',
             );
             console.log('HTML report available at:', path.resolve(htmlPath));
           } else {

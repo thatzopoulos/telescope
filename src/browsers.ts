@@ -34,8 +34,11 @@ const headless: boolean = parseEnvBool(process.env.HEADLESS, CI);
 
 type BrowserConfigs = Record<BrowserName, BrowserConfigEntry>;
 
-// Docker environment flag - enables sandbox bypass and HTTPS error handling
+// Docker environment flag - used for HTTPS error handling
 const isDocker = !!process.env.RUNNING_IN_DOCKER;
+
+// Check if running as root (uid 0) - requires --no-sandbox for Chrome
+const isRoot = process.getuid?.() === 0;
 
 class BrowserConfig {
   defaultChromiumArgs: string[] = [
@@ -64,17 +67,17 @@ class BrowserConfig {
     '--window-position="0,0"',
     '--window-size="1366,768"',
     '--remote-debugging-port=0',
-    // Required for running in Docker containers (Chrome won't start without these when running as root)
-    ...(isDocker ? ['--no-sandbox', '--disable-setuid-sandbox'] : []),
+    // Required when running as root (Chrome won't start with sandbox enabled as root)
+    ...(isRoot ? ['--no-sandbox', '--disable-setuid-sandbox'] : []),
   ];
 
   defaultIgnoreArgs: string[] = [
     //this one is causing padding on the video oddly...
     //since the reported issue is the opposite: https://bugs.chromium.org/p/chromium/issues/detail?id=1277272
     // '--enable-automation',
-    // Ignore Playwright's default --no-sandbox outside Docker (force sandboxing for security)
-    // In Docker, we explicitly add --no-sandbox via defaultChromiumArgs
-    ...(isDocker ? [] : ['--no-sandbox']),
+    // Ignore Playwright's default --no-sandbox when not root (force sandboxing for security)
+    // When running as root, we explicitly add --no-sandbox via defaultChromiumArgs
+    ...(isRoot ? [] : ['--no-sandbox']),
   ];
 
   defaultBrowserOptions: Pick<
@@ -82,8 +85,6 @@ class BrowserConfig {
     'headless' | 'viewport' | 'recordHar' | 'recordVideo'
   > = {
     headless,
-    // Ignore HTTPS errors in Docker - needed because Cloudflare WARP breaks SSL certificate validation
-    ...(isDocker && { ignoreHTTPSErrors: true }),
     viewport: { width: 1366, height: 768 },
     recordHar: {
       path: './results/example.har',

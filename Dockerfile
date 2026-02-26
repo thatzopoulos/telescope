@@ -38,6 +38,11 @@ RUN apt-get update && apt-get install -y \
     libmanette-0.2-0 \
     && rm -rf /var/lib/apt/lists/*
 
+# Create non-root user for running Chrome securely (with sandbox enabled)
+RUN groupadd -r telescope && useradd -r -g telescope -G audio,video telescope \
+    && mkdir -p /home/telescope \
+    && chown -R telescope:telescope /home/telescope
+
 # Set working directory
 WORKDIR /app
 
@@ -57,8 +62,12 @@ COPY . .
 # Build TypeScript
 RUN npm run build
 
-# Create results directory
-RUN mkdir -p /app/results /app/tmp /app/recordings
+# Create results directory and set ownership for non-root user
+RUN mkdir -p /app/results /app/tmp /app/recordings \
+    && chown -R telescope:telescope /app
+
+# Switch to non-root user for running Chrome with sandbox enabled
+USER telescope
 
 # Default command - show help
 ENTRYPOINT ["node", "dist/src/cli.js"]
