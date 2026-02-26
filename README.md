@@ -173,6 +173,12 @@ docker compose run --rm telescope -u https://example.com -b chrome
 
 Supports: Chrome, Chrome Beta, Edge, Firefox, and Safari (WebKit).
 
+The container runs as an unprivileged user by default. If you need network throttling (the `--connectionType` option), run the container as root:
+
+```bash
+docker compose run --rm --user root telescope --connectionType 3G https://example.com
+```
+
 ## Installation
 
 ### NPM dependencies
